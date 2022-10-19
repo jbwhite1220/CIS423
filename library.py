@@ -121,9 +121,9 @@ class DropColumnsTransformer(BaseEstimator, TransformerMixin):
     
 class TukeyTransformer(BaseEstimator, TransformerMixin):
 
-  def __init__(self, target_column, mode):
+  def __init__(self, target_column, fence):
     self.column_name = target_column
-    self.mode = mode
+    self.mode = fence
 
   def transform(self, X):
     clean = X.copy()
