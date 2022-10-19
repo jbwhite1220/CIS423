@@ -118,7 +118,60 @@ class DropColumnsTransformer(BaseEstimator, TransformerMixin):
       return result
     
     
+class TukeyTransformer(BaseEstimator, TransformerMixin):
 
+  def __init__(self, column_name, mode):
+    self.column_name = column_name
+    self.mode = mode
+
+  def transform(self, X):
+    clean = X.copy()
+    clean.boxplot(self.column_name, vert=True, ax=ax, grid=True)
+    q1 = clean[self.column_name].quantile(0.25)
+    q3 = clean[self.column_name].quantile(0.75)
+
+    iqr = q3-q1
+    outer_low = q1-3*iqr
+    outer_high = q3+3*iqr
+    inner_low = q1-1.5*iqr
+    inner_high = q3+1.5*iqr
+    if self.mode == 'outer': #or self.mode == 'inner':
+      clean[self.column_name] = clean[self.column_name].clip(lower = outer_low, upper=outer_high)
+      
+    else:
+      clean[self.column_name] = clean[self.column_name].clip(lower = inner_low, upper=inner_high)
+      
+    return clean
+
+  def fit(self, X, y = None):
+    print(f"\nWarning: {self.__class__.__name__}.fit does nothing.\n")
+    return X
+
+  def fit_transform(self, X, y = None):
+    result = self.transform(X)
+    return result
+  
+
+
+class Sigma3Transformer(BaseEstimator, TransformerMixin):
+  def __init__(self, column_name):
+    self.column_name = column_name
+
+  def transform(self, X):
+    X_ = X.copy()
+    m = X_[self.column_name].mean()
+    sigma = X_[self.column_name].std()
+    mins, maxs = (m-3*sigma, m+3*sigma)
+    X_[self.column_name] = X_[self.column_name].clip(lower=mins, upper=maxs)
+    return X_
+
+  def fit(self, X, y = None):
+    print(f"\nWarning: {self.__class__.__name__}.fit does nothing.\n")
+    return X
+
+  def fit_transform(self, X, y = None):
+    result = self.transform(X)
+    return result
 
     
     
