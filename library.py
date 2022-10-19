@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.pipeline import Pipeline
+import matplotlib.pyplot as plt
 
 from sklearn.base import BaseEstimator, TransformerMixin #gives us the tools to build custom transformers
 
