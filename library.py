@@ -175,6 +175,31 @@ class Sigma3Transformer(BaseEstimator, TransformerMixin):
     return result
 
     
+class MinMaxTransformer(BaseEstimator, TransformerMixin):
+  def __init__(self):
+    pass  #takes no arguments
+
+  def transform(self, X):
+    X_copy = X.copy()
+    col_list = X_copy.columns
+    
+    for item in col_list:
+      mi = X_copy[item].min()
+      mx = X_copy[item].max()
+      denom = (mx-mi)
+      X_copy[item] -= mi
+      X_copy[item] /= denom
+
+    return X_copy
+      
+
+  def fit(self, X, y = None):
+    print(f"\nWarning: {self.__class__.__name__}.fit does nothing.\n")
+    return X
+
+  def fit_transform(self, X, y = None):
+    result = self.transform(X)
+    return result
     
     
     
