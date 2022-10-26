@@ -12,6 +12,9 @@ from sklearn.neighbors import KNeighborsClassifier
 
 
 
+
+
+
 #This class maps values in a column, numeric or categorical.
 class MappingTransformer(BaseEstimator, TransformerMixin):
   
@@ -236,6 +239,7 @@ class KNNTransformer(BaseEstimator, TransformerMixin):
     
 
 def find_random_state(features_df, labels, n=200):
+  model = KNeighborsClassifier(n_neighbors=5)
   var = []  #collect test_error/train_error where error based on F1 score
 
   #2 minutes
