@@ -203,4 +203,27 @@ class MinMaxTransformer(BaseEstimator, TransformerMixin):
     return result
     
     
+class KNNTransformer(BaseEstimator, TransformerMixin):
+  def __init__(self,n_neighbors=5, weights="uniform"):
+    #your code
+    self.imputer = KNNImputer(n_neighbors=n_neighbors,        #a rough guess
+                     weights=weights,    #could alternatively have distance factor in
+                     add_indicator=False)  #do not add extra column for NaN
+
+    
+  def fit(self, X, y = None):
+    print(f"\nWarning: {self.__class__.__name__}.fit does nothing.\n")
+    return X
+
+  def transform(self, X):
+    X_copy = X.copy()
+    col_list = X_copy.columns
+    imputed_data = self.imputer.fit_transform(X_copy) 
+    new_data = pd.DataFrame(imputed_data,columns=col_list) 
+    return new_data
+    
+    
+  def fit_transform(self, X, y = None):
+    result = self.transform(X)
+    return result
     
