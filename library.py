@@ -127,6 +127,7 @@ class TukeyTransformer(BaseEstimator, TransformerMixin):
 
   def transform(self, X):
     clean = X.copy()
+    fig, ax = plt.subplots(1,1, figsize=(3,9))
     clean.boxplot(self.column_name, vert=True, ax=ax, grid=True)
     q1 = clean[self.column_name].quantile(0.25)
     q3 = clean[self.column_name].quantile(0.75)
