@@ -271,6 +271,17 @@ titanic_transformer = Pipeline(steps=[
     ('imputer', KNNTransformer())  #from chapter 6
     ], verbose=True)
 
+customer_transformer = Pipeline(steps=[
+    ('id', DropColumnsTransformer(column_list=['ID'])),  #you may need to add an action if you have no default
+    ('os', OHETransformer(target_column='OS')),
+    ('isp', OHETransformer(target_column='ISP')),
+    ('level', MappingTransformer('Experience Level', {'low': 0, 'medium': 1, 'high':2})),
+    ('gender', MappingTransformer('Gender', {'Male': 0, 'Female': 1})),
+    ('time spent', TukeyTransformer('Time Spent', 'inner')),
+    ('minmax', MinMaxTransformer()),
+    ('imputer', KNNTransformer())
+    ], verbose=True)
+
 def dataset_setup(full_table, label_column_name:str, the_transformer, rs, ts=.2):
   #your code below
   table_features = full_table.drop(columns=label_column_name)
